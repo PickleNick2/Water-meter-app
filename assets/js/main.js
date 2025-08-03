@@ -1,3 +1,5 @@
+import { checkNegativeInput } from "./helperfuncs.js";
+
 // App State
 let currentView = "input";
 let currentMethod = "email";
@@ -502,9 +504,13 @@ function deletePhoto() {
 
 // Calculations
 function calculateConsumption() {
+  //Check for valid inputs
   const currentReadingValue = parseFloat(
     document.getElementById("current-reading").value
   );
+  if (!checkNegativeInput(currentReadingValue)) {
+  }
+
   if (!currentReadingValue || readings.length === 0) return;
 
   const lastReading = readings[readings.length - 1];
@@ -1128,3 +1134,4 @@ window.addEventListener("beforeunload", function () {
 
 // Initialize app when page loads
 document.addEventListener("DOMContentLoaded", initApp);
+window.showView = showView;
