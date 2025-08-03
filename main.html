@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Water Meter Reading - Municipal Submission App</title>
+    <meta
+      name="description"
+      content="Professional water meter reading app for municipal submissions"
+    />
+    <meta name="theme-color" content="#1e40af" />
+
+    <link rel="stylesheet" href="assets/css/main.css" />
+  </head>
+
+  <body>
+    <div class="app-container">
+      <!-- App Header -->
+      <header class="app-header">
+        <h1 class="app-title">💧 Water Meter Reading</h1>
+        <p class="app-subtitle">Municipal Submission System</p>
+      </header>
+
+      <!-- Navigation -->
+      <nav class="nav-bar">
+        <div class="nav-tabs">
+          <button class="nav-tab active" onclick="showView('input')">
+            <svg fill="currentColor" viewBox="0 0 20 20">
+              <path
+                d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z"
+              />
+            </svg>
+            <span>Input</span>
+          </button>
+          <button class="nav-tab" onclick="showView('setup')">
+            <svg fill="currentColor" viewBox="0 0 20 20">
+              <path
+                fill-rule="evenodd"
+                d="M11.49 3.17c-.38-1.56-2.6-1.56-2.98 0a1.532 1.532 0 01-2.286.948c-1.372-.836-2.942.734-2.106 2.106.54.886.061 2.042-.947 2.287-1.561.379-1.561 2.6 0 2.978a1.532 1.532 0 01.947 2.287c-.836 1.372.734 2.942 2.106 2.106a1.532 1.532 0 012.287.947c.379 1.561 2.6 1.561 2.978 0a1.533 1.533 0 012.287-.947c1.372.836 2.942-.734 2.106-2.106a1.533 1.533 0 01.947-2.287c1.561-.379 1.561-2.6 0-2.978a1.532 1.532 0 01-.947-2.287c.836-1.372-.734-2.942-2.106-2.106a1.532 1.532 0 01-2.287-.947zM10 13a3 3 0 100-6 3 3 0 000 6z"
+                clip-rule="evenodd"
+              />
+            </svg>
+            <span>Setup</span>
+          </button>
+          <button class="nav-tab" onclick="showView('history')">
+            <svg fill="currentColor" viewBox="0 0 20 20">
+              <path
+                fill-rule="evenodd"
+                d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z"
+                clip-rule="evenodd"
+              />
+            </svg>
+            <span>History</span>
+          </button>
+        </div>
+      </nav>
+
+      <div class="content">
+        <!-- Input View -->
+        <div id="input-view" class="view active">
+          <h2>📊 New Reading</h2>
+
+          <div id="notification" class="notification" style="display: none">
+            <div class="notification-content">
+              <span class="notification-icon">🔔</span>
+              <span>Reminder: Submit your meter reading in 2 days!</span>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>📈 Current Reading (kL)</label>
+            <input
+              type="number"
+              id="current-reading"
+              placeholder="Enter your current meter reading"
+              style="font-size: 20px; text-align: center"
+            />
+          </div>
+
+          <div class="photo-section">
+            <label>📷 Meter Photograph</label>
+            <div
+              style="
+                background: #e0f2fe;
+                border: 1px solid #0288d1;
+                border-radius: 12px;
+                padding: 16px;
+                margin-bottom: 16px;
+                font-size: 14px;
+                color: #01579b;
+              "
+            >
+              <div style="font-weight: 600; margin-bottom: 8px">
+                📱 Camera Tips:
+              </div>
+              <div style="margin-bottom: 4px">
+                • Allow camera permission when prompted
+              </div>
+              <div style="margin-bottom: 4px">
+                • Use good lighting for clear readings
+              </div>
+              <div style="margin-bottom: 4px">
+                • Hold phone steady and focus on the numbers
+              </div>
+              <div>
+                • If camera fails, use Gallery to select an existing photo
+              </div>
+            </div>
+            <div class="button-row">
+              <button
+                class="button button-success"
+                onclick="requestCameraAccess()"
+              >
+                <svg
+                  width="20"
+                  height="20"
+                  fill="currentColor"
+                  viewBox="0 0 20 20"
+                >
+                  <path
+                    fill-rule="evenodd"
+                    d="M4 5a2 2 0 00-2 2v8a2 2 0 002 2h12a2 2 0 002-2V7a2 2 0 00-2-2h-1.586a1 1 0 01-.707-.293l-1.121-1.121A2 2 0 0011.172 3H8.828a2 2 0 00-1.414.586L6.293 4.707A1 1 0 015.586 5H4zm6 9a3 3 0 100-6 3 3 0 000 6z"
+                    clip-rule="evenodd"
+                  />
+                </svg>
+                Take Photo
+              </button>
+              <button
+                class="button button-primary"
+                onclick="selectFromGallery()"
+              >
+                <svg
+                  width="20"
+                  height="20"
+                  fill="currentColor"
+                  viewBox="0 0 20 20"
+                >
+                  <path
+                    fill-rule="evenodd"
+                    d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z"
+                    clip-rule="evenodd"
+                  />
+                </svg>
+                Gallery
+              </button>
+            </div>
+
+            <div id="photo-area" class="photo-area">
+              <div id="photo-placeholder" class="photo-placeholder">
+                📷 Take a clear photo of your water meter<br />
+                <small style="color: var(--gray-400); font-size: 14px"
+                  >Ensure the reading numbers are clearly visible</small
+                >
+              </div>
+              <img
+                id="photo-preview"
+                class="photo-preview"
+                style="display: none"
+              />
+              <div id="camera-area" class="camera-area" style="display: none">
+                <video
+                  id="camera-video"
+                  class="camera-video"
+                  autoplay
+                  playsinline
+                ></video>
+                <div class="camera-controls">
+                  <button class="close-camera-btn" onclick="stopCamera()">
+                    ×
+                  </button>
+                  <button class="capture-btn" onclick="capturePhoto()">
+                    <div
+                      style="
+                        width: 30px;
+                        height: 30px;
+                        background: white;
+                        border-radius: 50%;
+                      "
+                    ></div>
+                  </button>
+                </div>
+              </div>
+              <div
+                id="photo-controls"
+                class="photo-controls"
+                style="display: none"
+              >
+                <button
+                  class="photo-control-btn"
+                  onclick="retakePhoto()"
+                  title="Retake photo"
+                >
+                  <svg
+                    width="16"
+                    height="16"
+                    fill="currentColor"
+                    viewBox="0 0 20 20"
+                  >
+                    <path
+                      fill-rule="evenodd"
+                      d="M4 2a1 1 0 011 1v2.101a7.002 7.002 0 0111.601 2.566 1 1 0 11-1.885.666A5.002 5.002 0 005.999 7H9a1 1 0 010 2H4a1 1 0 01-1-1V3a1 1 0 011-1zm.008 9.057a1 1 0 011.276.61A5.002 5.002 0 0014.001 13H11a1 1 0 110-2h5a1 1 0 011 1v5a1 1 0 11-2 0v-2.101a7.002 7.002 0 01-11.601-2.566 1 1 0 01.61-1.276z"
+                      clip-rule="evenodd"
+                    />
+                  </svg>
+                </button>
+                <button
+                  class="photo-control-btn"
+                  onclick="deletePhoto()"
+                  title="Delete photo"
+                >
+                  <svg
+                    width="16"
+                    height="16"
+                    fill="currentColor"
+                    viewBox="0 0 20 20"
+                  >
+                    <path
+                      fill-rule="evenodd"
+                      d="M9 2a1 1 0 000 2h2a1 1 0 100-2H9z"
+                      clip-rule="evenodd"
+                    />
+                    <path
+                      fill-rule="evenodd"
+                      d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
+                      clip-rule="evenodd"
+                    />
+                  </svg>
+                </button>
+              </div>
+            </div>
+
+            <!-- Hidden file input for gallery selection -->
+            <input
+              type="file"
+              id="file-input"
+              class="file-input"
+              accept="image/*"
+              onchange="handleFileSelect(event)"
+            />
+          </div>
+
+          <div id="consumption-stats" class="stats-card" style="display: none">
+            <div class="stats-header">
+              <svg
+                width="20"
+                height="20"
+                fill="currentColor"
+                viewBox="0 0 20 20"
+                style="margin-right: 8px"
+              >
+                <path
+                  d="M2 11a1 1 0 011-1h2a1 1 0 011 1v5a1 1 0 01-1 1H3a1 1 0 01-1-1v-5zM8 7a1 1 0 011-1h2a1 1 0 011 1v9a1 1 0 01-1 1H9a1 1 0 01-1-1V7zM14 4a1 1 0 011-1h2a1 1 0 011 1v12a1 1 0 01-1 1h-2a1 1 0 01-1-1V4z"
+                />
+              </svg>
+              Usage Analysis
+            </div>
+            <div class="stats-item">
+              <span>Water used this period:</span>
+              <span class="stats-value" id="usage-amount">0 kL</span>
+            </div>
+            <div class="stats-item">
+              <span>Estimated cost:</span>
+              <span class="stats-value" id="estimated-cost">R0.00</span>
+            </div>
+            <div class="stats-item">
+              <span>Monthly average:</span>
+              <span class="stats-value" id="running-average">0 kL</span>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>📤 Submission Method</label>
+            <div class="method-selector">
+              <button
+                class="method-btn active"
+                id="email-btn"
+                onclick="selectMethod('email')"
+              >
+                <div style="font-size: 24px; margin-bottom: 4px">📧</div>
+                <div>Email</div>
+              </button>
+              <button
+                class="method-btn whatsapp"
+                id="whatsapp-btn"
+                onclick="selectMethod('whatsapp')"
+              >
+                <div style="font-size: 24px; margin-bottom: 4px">💬</div>
+                <div>WhatsApp</div>
+              </button>
+              <button
+                class="method-btn"
+                id="both-btn"
+                onclick="selectMethod('both')"
+              >
+                <div style="font-size: 24px; margin-bottom: 4px">📧💬</div>
+                <div>Both</div>
+              </button>
+            </div>
+          </div>
+
+          <div class="button-row">
+            <button class="button button-secondary" onclick="previewMessage()">
+              <svg
+                width="20"
+                height="20"
+                fill="currentColor"
+                viewBox="0 0 20 20"
+              >
+                <path d="M10 12a2 2 0 100-4 2 2 0 000 4z" />
+                <path
+                  fill-rule="evenodd"
+                  d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z"
+                  clip-rule="evenodd"
+                />
+              </svg>
+              Preview Message
+            </button>
+            <button
+              class="button button-primary"
+              id="send-btn"
+              onclick="sendReading()"
+            >
+              <svg
+                width="20"
+                height="20"
+                fill="currentColor"
+                viewBox="0 0 20 20"
+              >
+                <path
+                  d="M10.894 2.553a1 1 0 00-1.788 0l-7 14a1 1 0 001.169 1.409l5-1.429A1 1 0 009 15.571V11a1 1 0 112 0v4.571a1 1 0 00.725.962l5 1.428a1 1 0 001.17-1.408l-7-14z"
+                />
+              </svg>
+              Submit Reading
+            </button>
+          </div>
+        </div>
+
+        <!-- Setup View -->
+        <div id="setup-view" class="view">
+          <h2>⚙️ Configuration</h2>
+
+          <div class="form-group">
+            <label>👤 Property Owner Name</label>
+            <input
+              type="text"
+              id="owner-name"
+              placeholder="Enter your full name"
+            />
+          </div>
+
+          <div class="form-group">
+            <label>📧 Owner Email Address</label>
+            <input
+              type="email"
+              id="owner-email"
+              placeholder="your.email@example.com"
+            />
+            <small>Your email address for municipal correspondence</small>
+          </div>
+
+          <div class="form-group">
+            <label>📱 Owner Contact Number</label>
+            <input
+              type="tel"
+              id="owner-contact"
+              placeholder="+27 XX XXX XXXX"
+            />
+            <small
+              >This number will appear in your submissions for municipal
+              contact</small
+            >
+          </div>
+
+          <div class="form-group">
+            <label>🏠 Property Address</label>
+            <textarea
+              id="house-address"
+              rows="3"
+              placeholder="Enter your complete postal address"
+            ></textarea>
+          </div>
+
+          <div class="form-group">
+            <label>🏢 Municipality Name</label>
+            <input
+              type="text"
+              id="municipality-name"
+              placeholder="e.g., City of Johannesburg"
+            />
+            <small
+              >Official name of your municipality or water services
+              provider</small
+            >
+          </div>
+
+          <div class="form-group">
+            <label>🔢 Municipal Account Number</label>
+            <input
+              type="text"
+              id="account-number"
+              placeholder="e.g., 123456789"
+            />
+            <small>Your municipal account number (appears on your bill)</small>
+          </div>
+
+          <div class="form-group">
+            <label>🏷️ Water Meter Number</label>
+            <input
+              type="text"
+              id="meter-number"
+              placeholder="e.g., WM-789456123"
+            />
+            <small>Physical meter identification number</small>
+          </div>
+
+          <div class="form-group">
+            <label>📧 Municipality Email</label>
+            <input
+              type="email"
+              id="municipality-email"
+              placeholder="water.services@municipality.gov.za"
+            />
+          </div>
+
+          <div class="form-group">
+            <label>💬 Municipality WhatsApp</label>
+            <input
+              type="tel"
+              id="municipality-whatsapp"
+              placeholder="+27 XX XXX XXXX"
+            />
+          </div>
+
+          <div class="form-group">
+            <label>📧 Additional Contact (Optional)</label>
+            <input
+              type="email"
+              id="additional-email"
+              placeholder="secondary@municipality.gov.za"
+            />
+          </div>
+
+          <div class="form-group">
+            <label>💰 Water Rate (Rand per kL)</label>
+            <input
+              type="number"
+              step="0.01"
+              id="cost-per-kl"
+              placeholder="28.50"
+            />
+          </div>
+
+          <div class="form-group">
+            <label>📅 Monthly Reading Date (Day of Month)</label>
+            <input
+              type="number"
+              min="1"
+              max="31"
+              id="cycle-end-date"
+              placeholder="Enter day (1-31)"
+              style="text-align: center; font-size: 18px"
+            />
+            <small
+              >Enter the day of each month when you must submit your reading
+              (e.g., 15 for the 15th of every month)</small
+            >
+          </div>
+
+          <div class="form-group">
+            <label>🔔 Notification Preference</label>
+            <select id="notification-method">
+              <option value="email">Email Notifications</option>
+              <option value="sms">SMS Notifications</option>
+              <option value="whatsapp">WhatsApp Notifications</option>
+            </select>
+          </div>
+
+          <button class="button button-primary" onclick="saveSetup()">
+            <svg width="20" height="20" fill="currentColor" viewBox="0 0 20 20">
+              <path
+                d="M7.707 10.293a1 1 0 10-1.414 1.414l3 3a1 1 0 001.414 0l3-3a1 1 0 00-1.414-1.414L11 11.586V6h5a2 2 0 012 2v7a2 2 0 01-2 2H4a2 2 0 01-2-2V8a2 2 0 012-2h5v5.586l-1.293-1.293zM9 4a1 1 0 012 0v2H9V4z"
+              />
+            </svg>
+            Save Configuration
+          </button>
+        </div>
+
+        <!-- History View -->
+        <div id="history-view" class="view">
+          <h2>📊 Reading History</h2>
+
+          <div id="history-summary" class="stats-card" style="display: none">
+            <div class="stats-header">
+              <svg
+                width="20"
+                height="20"
+                fill="currentColor"
+                viewBox="0 0 20 20"
+                style="margin-right: 8px"
+              >
+                <path
+                  fill-rule="evenodd"
+                  d="M3 3a1 1 0 000 2v8a2 2 0 002 2h2.586l-1.293 1.293a1 1 0 101.414 1.414L10 15.414l2.293 2.293a1 1 0 001.414-1.414L12.414 15H15a2 2 0 002-2V5a1 1 0 100-2H3zm11.707 4.707a1 1 0 00-1.414-1.414L10 9.586 8.707 8.293a1 1 0 00-1.414 0l-2 2a1 1 0 101.414 1.414L8 10.414l1.293 1.293a1 1 0 001.414 0l4-4z"
+                  clip-rule="evenodd"
+                />
+              </svg>
+              Usage Summary
+            </div>
+            <div class="stats-item">
+              <span>Total readings recorded:</span>
+              <span class="stats-value" id="total-readings">0</span>
+            </div>
+            <div class="stats-item">
+              <span>Average monthly usage:</span>
+              <span class="stats-value" id="average-usage">0 kL</span>
+            </div>
+            <div class="stats-item">
+              <span>Total water used:</span>
+              <span class="stats-value" id="total-usage">0 kL</span>
+            </div>
+          </div>
+
+          <div id="history-list">
+            <div class="empty-state">
+              <div class="empty-state-icon">📊</div>
+              <div class="empty-state-text">No readings recorded yet</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <footer class="app-footer">
+        <div>Municipal Water Meter Reading System</div>
+        <div style="margin-top: 4px; font-size: 10px">
+          Professional Web Application • Secure • Reliable
+        </div>
+      </footer>
+    </div>
+
+    <!-- Preview Modal -->
+    <div id="preview-modal" class="modal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3 class="modal-title" id="modal-title">📧 Message Preview</h3>
+          <button class="close-btn" onclick="closeModal()">×</button>
+        </div>
+        <div class="modal-body" id="modal-body">
+          <!-- Preview content will be inserted here -->
+        </div>
+      </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="assets/js/main.js"></script>
+  </body>
+</html>
