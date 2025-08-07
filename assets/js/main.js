@@ -1,4 +1,4 @@
-import { checkNegativeInput } from "./helperfuncs.js";
+import { isPositiveInput } from "./helperfuncs.js";
 
 // App State
 let currentView = "input";
@@ -504,12 +504,18 @@ function deletePhoto() {
 
 // Calculations
 function calculateConsumption() {
-  //Check for valid inputs
-  const currentReadingValue = parseFloat(
-    document.getElementById("current-reading").value
-  );
-  if (!checkNegativeInput(currentReadingValue)) {
+  const currentReading = document.getElementById("current-reading");
+  const currentReadingValue = parseFloat(currentReading.value);
+
+  //Check for valid reading input
+  if (!isPositiveInput(currentReadingValue)) {
+    currentReading.style.borderColor = "2px solid red";
+    currentReading.value = "";
+    showError("Please enter a positive number for the reading.");
+    currentReading.focus();
+    return;
   }
+  currentReading.style.borderColor = "";
 
   if (!currentReadingValue || readings.length === 0) return;
 
@@ -1134,4 +1140,10 @@ window.addEventListener("beforeunload", function () {
 
 // Initialize app when page loads
 document.addEventListener("DOMContentLoaded", initApp);
+
+//Export functions for use in HTML, find more compact way to do this later
 window.showView = showView;
+window.previewMessage = previewMessage;
+window.requestCameraAccess = requestCameraAccess;
+window.capturePhoto = capturePhoto;
+window.closeModal = closeModal;
