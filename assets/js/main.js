@@ -766,6 +766,14 @@ function sendWhatsApp(reading) {
   window.open(whatsappUrl, "_blank");
 }
 
+function getWhatsAppIcon() {
+  return `
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="20" height="20" style="vertical-align: middle;">
+      <path fill="#25D366" d="M16 0C7.163 0 0 7.163 0 16a15.85 15.85 0 002.193 8.093L0 32l8.137-2.136A15.89 15.89 0 0016 32c8.837 0 16-7.163 16-16S24.837 0 16 0zm0 29.5c-2.475 0-4.82-.61-6.89-1.674l-.492-.26-4.84 1.27 1.297-4.705-.32-.485A13.44 13.44 0 012.5 16C2.5 8.82 8.82 2.5 16 2.5S29.5 8.82 29.5 16 23.18 29.5 16 29.5z"/>
+      <path fill="#25D366" d="M24.12 19.38c-.36-.18-2.125-1.05-2.45-1.17-.325-.12-.56-.18-.795.185s-.915 1.17-1.12 1.41c-.205.24-.41.27-.77.09-.36-.18-1.515-.55-2.89-1.755-1.065-.95-1.785-2.13-1.995-2.49-.21-.36-.02-.555.16-.735.165-.165.36-.42.54-.63.18-.21.24-.36.36-.6.12-.24.06-.45-.03-.63-.09-.18-.795-1.92-1.09-2.625-.285-.69-.58-.6-.795-.61l-.68-.01c-.24 0-.63.09-.96.45s-1.26 1.23-1.26 3.015c0 1.785 1.29 3.51 1.47 3.75.18.24 2.54 3.885 6.16 5.445.86.37 1.535.59 2.06.755.865.275 1.65.235 2.27.14.69-.105 2.125-.87 2.425-1.71.3-.84.3-1.56.21-1.71-.09-.15-.33-.24-.69-.42z"/>
+    </svg>
+  `;
+}
 // Preview and Send Functions
 function previewMessage() {
   const reading = document.getElementById("current-reading").value;
@@ -782,17 +790,28 @@ function previewMessage() {
     title.innerHTML = "📧 Email Preview";
     body.innerHTML = generateEmailPreview(reading);
   } else if (currentMethod === "whatsapp") {
-    title.innerHTML = "💬 WhatsApp Preview";
+    title.innerHTML = `
+  <span style="vertical-align: middle; display: inline-flex; align-items: center; gap: 8px;">
+    ${getWhatsAppIcon()} WhatsApp Preview
+  </span>
+`;
     body.innerHTML = generateWhatsAppPreview(reading);
   } else if (currentMethod === "both") {
-    title.innerHTML = "📧💬 Both Messages Preview";
+    title.innerHTML = `📧 <span style="vertical-align: middle; display: inline-flex; align-items: center; gap: 8px;">
+    ${getWhatsAppIcon()} Both Messages Preview
+  </span>
+  `;
     body.innerHTML = `
             <div style="margin-bottom: 30px;">
                 <h4 style="color: var(--primary-color); margin-bottom: 15px; font-size: 18px;">📧 Email Message:</h4>
                 ${generateEmailPreview(reading)}
             </div>
             <div style="border-top: 2px solid var(--gray-200); padding-top: 30px;">
-                <h4 style="color: var(--success-color); margin-bottom: 15px; font-size: 18px;">💬 WhatsApp Message:</h4>
+                <h4 style="color: var(--success-color); margin-bottom: 15px; font-size: 18px;">
+  <span style="vertical-align: middle; display: inline-flex; align-items: center; gap: 8px;">
+    ${getWhatsAppIcon()} WhatsApp Preview:
+  </span>
+</h4>
                 ${generateWhatsAppPreview(reading)}
             </div>
         `;
@@ -1002,8 +1021,8 @@ function loadHistory() {
       reading.method === "email"
         ? "📧"
         : reading.method === "whatsapp"
-        ? "💬"
-        : "📧💬";
+        ? getWhatsAppIcon()
+        : "📧" + getWhatsAppIcon();
     const methodText =
       reading.method === "email"
         ? "Email"
@@ -1153,3 +1172,6 @@ window.sendWhatsApp = sendWhatsApp;
 window.selectFromGallery = selectFromGallery;
 window.handleFileSelect = handleFileSelect;
 window.selectMethod = selectMethod;
+window.saveSetup = saveSetup;
+window.loadSetupForm = loadSetupForm;
+window.loadHistory = loadHistory;
